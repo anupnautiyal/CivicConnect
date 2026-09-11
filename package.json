@@ -1,0 +1,13 @@
+{
+  "name": "civicconnect",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "npm run dev --workspace @civicconnect/web",
+    "build": "npm run build --workspace @civicconnect/web",
+    "typecheck": "npm run typecheck --workspace @civicconnect/web",
+    "test": "node --experimental-strip-types --test packages/domain/test/*.test.ts",
+    "check": "npm run typecheck && npm test && npm run build"
+  },
+  "engines": { "node": ">=22.13.0" }
+}
