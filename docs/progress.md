@@ -23,3 +23,18 @@
 6. Verify each actor can access only its permitted area.
 
 Later sprints remain as defined in the original plan. No backend functionality is implied by the prototype. Status graph tests do not establish authorization or evidence enforcement.
+
+## Sprint 1 implementation — identity
+
+- [x] Cookie-based Supabase sessions with server-validated identity and refresh proxy.
+- [x] Registration, login, logout, email-confirmation callback, recovery and password update.
+- [x] Exact role routes and active-profile checks for all four actors.
+- [x] Citizen-only signup trigger and backfill; own-profile RLS and protected role columns.
+- [x] Active-user configuration reads and audited role/department/deactivation changes.
+- [x] Local PostgreSQL integration tests for access denial, ownership, role escalation and audit.
+- [x] TypeScript, five tests and production build passed during implementation.
+- [x] Hosted setup SQL applied successfully (confirmed by user); anonymous profile/configuration/audit reads return 401 permission denied.
+- [ ] Configure Auth redirect URLs (awaiting user confirmation).
+- [ ] Hosted email confirmation/recovery and four-actor sign-in acceptance tests.
+
+Authentication setup: docs/operations/authentication.md. The original sample workflow is now at /demo. The root page provides account entry points. Staff pages are protected foundations; queues and configuration management are not yet implemented. No hosted database migration or real email delivery is claimed by local tests.

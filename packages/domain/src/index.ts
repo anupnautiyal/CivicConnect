@@ -28,3 +28,7 @@ export const demoIssue = {
   description: "The community bin is overflowing and waste is spreading onto the footpath.",
   department: "Sanitation"
 } as const;
+
+export const roleHome: Readonly<Record<Role, string>> = {
+  CITIZEN: '/citizen', OFFICER: '/officer', DEPARTMENT_ADMIN: '/department', SYSTEM_ADMIN: '/admin'
+};

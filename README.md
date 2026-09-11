@@ -4,7 +4,7 @@ Civic issue reporting PWA and municipal operations workspace. The source of scop
 
 ## Current milestone
 
-Sprint 0 foundation: Next.js/TypeScript workspace, shared lifecycle definitions, a clickable sample flow, and database design. The UI is explicitly a prototype: no authentication, file upload, persistence, or authorization is implemented yet. Navigation between actor views is for demonstration only.
+Sprint 1 authentication is implemented: registration, login, logout, email confirmation, recovery, protected role pages, profile policies and audit records. Apply the hosted setup and configure redirects using [the authentication guide](docs/operations/authentication.md). The reporting flow at /demo remains a sample without report persistence or uploads.
 
 ## Run locally
 
@@ -15,13 +15,13 @@ npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:3000. Use **Preview submission**, **Verify report**, **Assign demo officer**, **Start work**, **Preview resolution**, then **Confirm resolution**. Refreshing clears all demo state.
+Open http://127.0.0.1:3000 to create an account or sign in. For the sample workflow open http://127.0.0.1:3000/demo. Use **Preview submission**, **Verify report**, **Assign demo officer**, **Start work**, **Preview resolution**, then **Confirm resolution**. Refreshing clears all demo state.
 
 ```sh
 npm run check
 ```
 
-Runs TypeScript, domain tests, and a production build. CI runs the same checks. Supabase credentials are not needed for this prototype. The environment template in `apps/web/.env.example` documents the upcoming backend configuration.
+Runs TypeScript, domain tests, local PostgreSQL policy tests, and a production build. CI runs the same checks. Copy apps/web/.env.example to apps/web/.env.local and supply your Supabase URL, publishable key and app origin for live authentication. No service-role key is used. The build and local policy tests work without hosted credentials.
 
 ## Structure
 
