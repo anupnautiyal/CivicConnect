@@ -4,7 +4,7 @@ Civic issue reporting PWA and municipal operations workspace. The source of scop
 
 ## Current milestone
 
-Sprint 1 authentication is implemented: registration, login, logout, email confirmation, recovery, protected role pages, profile policies and audit records. Apply the hosted setup and configure redirects using [the authentication guide](docs/operations/authentication.md). The reporting flow at /demo remains a sample without report persistence or uploads.
+Sprint 2 reporting is implemented: private photo upload, location selection, secure submission, My complaints and report timelines. See [reporting setup](docs/operations/reporting.md). Authentication includes registration, login, logout, email confirmation, recovery, protected role pages, profile policies and audit records. Apply the hosted setup and configure redirects using [the authentication guide](docs/operations/authentication.md). The reporting flow at /demo remains a sample without report persistence or uploads.
 
 ## Run locally
 
