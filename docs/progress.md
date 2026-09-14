@@ -53,3 +53,24 @@ Authentication setup: docs/operations/authentication.md. The original sample wor
 Ward assignment remains pending geographic routing. Current department routing uses the category default. Offline drafts, staff workflow and notifications remain in their planned sprints. Changes are local until the next requested GitHub push.
 
 Photo/location follow-up: compact complaint cards now display private photo previews with retry controls; place search is available when browser GPS times out. Build and 12 tests pass. Actual device location and signed-in image display still require user verification.
+
+## Sprint 3 — municipal workflow
+
+- [x] Sprint 2 pushed to GitHub as cee40b4; automatic device GPS remains open and deferred.
+- [x] Department, officer and system-admin queues with filters and pagination.
+- [x] Verification/rejection, assignment/reassignment, work-start and evidence-backed resolution.
+- [x] Citizen-visible and internal notes, actor snapshots, audit events and retry receipts.
+- [x] Department/assignment RLS and private resolution-photo access.
+- [x] Citizen details show public staff updates and resolution evidence.
+- [x] TypeScript, 13 automated tests and production build pass.
+- [x] Hosted municipal migration applied (user confirmed); anonymous assignments/comments/workflow receipt reads return 401 permission denied.
+- [x] Separate confirmed mock admin/officer accounts configured; both sign in and read all hosted reports.
+- [ ] Complete signed-in workflow acceptance from verification through photo-backed resolution.
+
+See docs/operations/municipal-workflow.md. Sprint 3 changes are local; the pushed checkpoint is Sprint 2. Citizen confirmation/reopening/ratings and notifications remain Sprint 4.
+
+## Revised staff visibility
+
+All active administrators and officers can view all citizen reports. General admins enter at /admin; officers enter at /officer with an optional Assigned to me filter. Citizen privacy is unchanged. Officer mutations and resolution uploads still require an active assignment. Migration 202609130005_global_staff_visibility.sql was applied successfully (user confirmation). Hosted read-only verification on 2026-09-14 confirmed both mock accounts see all 2 existing reports and the administrator department is null. Existing credentials remain valid. TypeScript, all 14 tests and the production build passed; migration replay also passed its regression test.
+
+Hosted workflow acceptance (2026-09-14): passed using authenticated mock citizen/admin/officer API sessions. Labelled synthetic report 6d252b17-9539-4fb4-abb9-41144945de77 progressed SUBMITTED -> VERIFIED -> ASSIGNED -> IN_PROGRESS -> RESOLVED. Verified resolution retry creates no duplicate history/media, citizen sees only public notes, and both private photos download successfully. Test report retained for browser inspection; mock citizen credentials saved in the ignored credentials file. Browser form/visual acceptance remains pending.

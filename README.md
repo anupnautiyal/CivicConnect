@@ -34,3 +34,5 @@ Runs TypeScript, domain tests, local PostgreSQL policy tests, and a production b
 - `docs/progress.md`: milestone status and next steps.
 
 This step is local development only. Production release follows Sprint 6 acceptance checks.
+
+Municipal workflow is now implemented locally: staff queues, verification, assignment, public/internal updates, and resolution evidence. Follow [the staff setup guide](docs/operations/municipal-workflow.md) to configure test actors and run acceptance. GPS auto-detection remains an open deferred issue; map selection and place search remain available.

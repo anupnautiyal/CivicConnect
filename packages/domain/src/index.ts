@@ -30,5 +30,5 @@ export const demoIssue = {
 } as const;
 
 export const roleHome: Readonly<Record<Role, string>> = {
-  CITIZEN: '/citizen', OFFICER: '/officer', DEPARTMENT_ADMIN: '/department', SYSTEM_ADMIN: '/admin'
+  CITIZEN: '/citizen', OFFICER: '/officer', DEPARTMENT_ADMIN: '/admin', SYSTEM_ADMIN: '/admin'
 };

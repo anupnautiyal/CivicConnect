@@ -6,7 +6,7 @@ test("public account pages render and protected routes reject anonymous visitors
     const response = await fetch(origin + path);
     assert.equal(response.status, 200, path);
   }
-  for (const path of ["/account", "/citizen", "/citizen/report", "/citizen/complaints/10000000-0000-0000-0000-000000000001", "/officer", "/department", "/admin", "/update-password"]) {
+  for (const path of ["/account", "/staff/issues/10000000-0000-0000-0000-000000000001", "/citizen", "/citizen/report", "/citizen/complaints/10000000-0000-0000-0000-000000000001", "/officer", "/department", "/admin", "/update-password"]) {
     const response = await fetch(origin + path, { redirect: "manual" });
     const destination = path === "/update-password" ? "/forgot-password" : "/login";
     const html = await response.text();
