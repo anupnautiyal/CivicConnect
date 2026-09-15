@@ -1,33 +1,14 @@
 "use client";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState,useState } from "react";
 import { login, register, recover, updatePassword, type AuthState } from "./actions";
-const variants = {
-  login: { title: "Welcome back", description: "Sign in to follow your reports and access your workspace.", label: "Sign in", action: login },
-  register: { title: "Join your community", description: "Create a citizen account to report and track local issues.", label: "Create account", action: register },
-  recover: { title: "Reset your password", description: "We’ll send a recovery link to your email address.", label: "Send recovery link", action: recover },
-  update: { title: "Choose a new password", description: "Use at least 12 characters for your new password.", label: "Update password", action: updatePassword }
-};
-export function AuthForm({ mode }: { mode: keyof typeof variants }) {
-  const view = variants[mode];
-  const [state, action, pending] = useActionState<AuthState, FormData>(view.action, {});
-  return <main id="main" className="auth-main"><Link className="brand" href="/"><span className="mark">C</span>CivicConnect</Link>
-    <section className="panel auth-panel"><p className="eyebrow">COMMUNITY SERVICES</p><h1>{view.title}</h1><p className="muted">{view.description}</p>
-      <form action={action}>
-        {mode === "register" && <label>Full name<input name="name" autoComplete="name" required maxLength={120}/></label>}
-        {mode !== "update" && <label>Email address<input type="email" name="email" autoComplete="email" required maxLength={254}/></label>}
-        {mode !== "recover" && <label>Password<input type="password" name="password" autoComplete={mode === "login" ? "current-password" : "new-password"} required minLength={mode === "login" ? 1 : 12} maxLength={128}/></label>}
-        {mode === "update" && <label>Confirm password<input type="password" name="confirmPassword" autoComplete="new-password" required minLength={12} maxLength={128}/></label>}
-        {state.error && <p className="auth-error" role="alert">{state.error}</p>}
-        {state.message && <p className="success" role="status">{state.message}</p>}
-        <button type="submit" disabled={pending}>{pending ? "Please wait…" : view.label}</button>
-      </form>
-      <nav className="auth-links" aria-label="Account options">
-        {mode !== "login" && <Link href="/login">Sign in</Link>}
-        {mode === "login" && <><Link href="/register">Create an account</Link><Link href="/forgot-password">Forgot password?</Link></>}
-        {mode === "update" && <Link href="/account">Return to account</Link>}
-        <Link href="/demo">Explore the sample flow</Link>
-      </nav>
-    </section></main>;
+const variants={login:{title:"Good to see you again.",description:"Your neighbourhood. Your updates. All in one place.",label:"Sign in to your workspace",action:login},register:{title:"Small actions. Better cities.",description:"Choose how you want to make a difference.",label:"Create your account",action:register},recover:{title:"Let’s get you back in.",description:"We’ll email you a password recovery link.",label:"Send recovery link",action:recover},update:{title:"A fresh start.",description:"Choose a strong password with at least 12 characters.",label:"Update password",action:updatePassword}};
+export function AuthForm({mode}:{mode:keyof typeof variants}){
+ const view=variants[mode];const [state,action,pending]=useActionState<AuthState,FormData>(view.action,{});const [role,setRole]=useState("CITIZEN");const [show,setShow]=useState(false);
+ return <main id="main" className="auth-scene"><aside className="auth-story"><Link className="brand" href="/"><span className="mark">C</span>CivicConnect</Link><div><p className="eyebrow">A LITTLE CARE GOES A LONG WAY</p><h2>Your city.<br/>Your move<span>.</span></h2><p>Turn everyday concerns into visible change. Report, connect, and follow the progress.</p><div className="city-art" aria-hidden="true"><i/><i/><i/><i/><i/><span className="city-sun"/><span className="city-road"/></div></div><p className="story-footer">Built for people. Connected by purpose.</p></aside><section className="auth-content"><Link href="/" className="back-link">← Back to the city</Link><div className="auth-panel"><p className="eyebrow">{mode==="login"?"WELCOME HOME":"LET’S GET STARTED"}</p><h1>{view.title}</h1><p className="muted">{view.description}</p><form action={action}>
+ {mode==="register"&&<><fieldset className="role-picker"><legend>I’m joining as a</legend>{[{value:"CITIZEN",name:"Citizen",hint:"Report & track",icon:"◎"},{value:"DEPARTMENT_ADMIN",name:"Administrator",hint:"Review & assign",icon:"◇"},{value:"OFFICER",name:"Officer",hint:"Act & resolve",icon:"↗"}].map(r=><label key={r.value} className={role===r.value?"selected":""}><input type="radio" name="requestedRole" value={r.value} checked={role===r.value} onChange={()=>setRole(r.value)}/><span aria-hidden="true">{r.icon}</span><strong>{r.name}</strong><small>{r.hint}</small></label>)}</fieldset>{role!=="CITIZEN"&&<div className="access-note"><strong>Verified staff access</strong><p>Use your work email. A project owner must verify your employment and approve your request. Until approved, your account has citizen access only.</p><label>Municipality / organisation<input name="organisation" required maxLength={160} placeholder="Your municipal organisation"/></label><label>Staff / employee ID<input name="employeeId" required maxLength={80} placeholder="Your official staff reference"/></label></div>}<label>Full name<input name="name" autoComplete="name" required maxLength={120} placeholder="Your full name"/></label></>}
+ {mode!=="update"&&<label>Email address<input type="email" name="email" autoComplete="email" required maxLength={254} placeholder="you@example.com"/></label>}
+ {mode!=="recover"&&<label>Password<div className="password-field"><input type={show?"text":"password"} name="password" autoComplete={mode==="login"?"current-password":"new-password"} required minLength={mode==="login"?1:12} maxLength={128} placeholder={mode==="login"?"Enter your password":"At least 12 characters"}/><button type="button" className="password-toggle" aria-label={show?"Hide password":"Show password"} aria-pressed={show} onClick={()=>setShow(!show)}>{show?"Hide":"Show"}</button></div></label>}
+ {mode==="update"&&<label>Confirm password<input type={show?"text":"password"} name="confirmPassword" autoComplete="new-password" required minLength={12} maxLength={128}/></label>}
+ {state.error&&<p className="auth-error" role="alert">{state.error}</p>}{state.message&&<p className="success" role="status">{state.message}</p>}<button className="auth-submit" type="submit" disabled={pending}>{pending?"Just a moment…":view.label}<span aria-hidden="true"> ↗</span></button></form><nav className="auth-links" aria-label="Account options">{mode!=="login"&&<Link href="/login">Already registered? Sign in</Link>}{mode==="login"&&<><Link href="/register">Create an account</Link><Link href="/forgot-password">Forgot password?</Link></>}{mode==="update"&&<Link href="/account">Return to account</Link>}</nav></div><p className="hint auth-footnote">Your neighbourhood deserves a little more you.</p></section></main>;
 }
-

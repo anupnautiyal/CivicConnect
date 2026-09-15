@@ -22,17 +22,18 @@ export async function login(_: AuthState, form: FormData): Promise<AuthState> {
   redirect("/account");
 }
 export async function register(_: AuthState, form: FormData): Promise<AuthState> {
-  const input = z.object({ email: emailSchema, password: passwordSchema, name: z.string().trim().min(1).max(120) })
-    .safeParse({ email: form.get("email"), password: form.get("password"), name: form.get("name") });
+  const input = z.object({ email: emailSchema, password: passwordSchema, name: z.string().trim().min(1).max(120), requestedRole:z.enum(["CITIZEN","DEPARTMENT_ADMIN","OFFICER"]), organisation:z.string().trim().max(160), employeeId:z.string().trim().max(80) })
+    .safeParse({ email: form.get("email"), password: form.get("password"), name: form.get("name"), requestedRole:form.get("requestedRole")??"CITIZEN", organisation:form.get("organisation")??"", employeeId:form.get("employeeId")??"" });
   if (!input.success) return { error: input.error.issues[0].message };
+  if(input.data.requestedRole!=="CITIZEN"&&(!input.data.organisation||!input.data.employeeId))return {error:"Enter your organisation and staff ID for verification."};
   try {
     const supabase = await createClient();
     const { error } = await supabase.auth.signUp({
       email: input.data.email, password: input.data.password,
-      options: { data: { display_name: input.data.name }, emailRedirectTo: callback() }
+      options: { data: { display_name: input.data.name, requested_role:input.data.requestedRole, organisation:input.data.organisation, employee_id:input.data.employeeId }, emailRedirectTo: callback() }
     });
     if (error) return { error: "Registration could not be completed. Try again later or sign in if you already have an account." };
-    return { message: "Check your email for a confirmation link. Open it in this browser, then sign in. If you already have an account, use sign in or password recovery." };
+    return { message: (input.data.requestedRole!=="CITIZEN"?"Staff access requires independent employment verification and owner approval. Your account starts with citizen permissions. ":"")+"Check your email for a confirmation link. Open it in this browser, then sign in. If you already have an account, use sign in or password recovery." };
   } catch { return { error: "Registration is temporarily unavailable. Please try again." }; }
 }
 export async function recover(_: AuthState, form: FormData): Promise<AuthState> {
@@ -64,4 +65,3 @@ export async function logout() {
   if (error) redirect("/login?error=logout");
   redirect("/login");
 }
-
